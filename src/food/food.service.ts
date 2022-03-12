@@ -16,7 +16,14 @@ export class FoodService {
   }
 
   async addFood(addFood: AddFood): Promise<Food> {
-    const food = new Food(addFood);
+    const food = new Food(
+      addFood.name,
+      addFood.image,
+      addFood.kind1,
+      addFood.kind2,
+      addFood.flavor1,
+      addFood.flavor2,
+    );
     try {
       return await this.foodRepository.create(food);
     } catch (e) {
