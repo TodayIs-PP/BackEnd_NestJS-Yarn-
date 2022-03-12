@@ -28,4 +28,10 @@ export class FoodRepository {
   async delete(id: string): Promise<Food> {
     return await this.foodModel.findByIdAndDelete(id).exec();
   }
+
+  async search(word: string): Promise<Food[]> {
+    return await this.foodModel
+      .find({ name: { $regex: '.*' + word + '.*' } })
+      .exec();
+  }
 }
