@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { Response } from 'express';
 import { AddFood } from './dto/addFood.dto';
 import { Food } from './entity/food.entity';
 import { FoodController } from './food.controller';
@@ -7,6 +8,18 @@ import { FoodService } from './food.service';
 describe('FoodController', () => {
   let controller: FoodController;
   let service: FoodService;
+  const responseMock = {
+    statusCode: Number,
+
+    status: jest.fn((httpStatusCode: number) => {
+      responseMock.statusCode = httpStatusCode;
+      return responseMock;
+    }),
+    json: jest.fn((body) => {
+      responseMock.send = body;
+      return responseMock;
+    }),
+  } as unknown as Response;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -38,6 +51,7 @@ describe('FoodController', () => {
     try {
       await controller.addFood(
         new AddFood('소유라멘', null, '일식', '라멘', '짠맛', null),
+        responseMock,
       );
     } catch (e) {
       expect(e).toBeInstanceOf(Error);
@@ -55,6 +69,7 @@ describe('FoodController', () => {
     expect(
       await controller.addFood(
         new AddFood('소유라멘', null, '일식', '라멘', '짠맛', null),
+        responseMock,
       ),
     ).toBeInstanceOf(Food);
   });
