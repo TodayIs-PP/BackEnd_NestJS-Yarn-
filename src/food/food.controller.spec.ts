@@ -52,7 +52,7 @@ describe('FoodController', () => {
     try {
       await controller.addFood(
         null,
-        new AddFood('소유라멘', null, '일식', '라멘', '짠맛', null),
+        new AddFood('소유라멘', '일식', '라멘', '짠맛', null),
         responseMock,
       );
     } catch (e) {
@@ -71,7 +71,7 @@ describe('FoodController', () => {
     expect(
       await controller.addFood(
         null,
-        new AddFood('소유라멘', null, '일식', '라멘', '짠맛', null),
+        new AddFood('소유라멘', '일식', '라멘', '짠맛', null),
         responseMock,
       ),
     ).toBe(
