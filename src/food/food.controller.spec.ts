@@ -1,3 +1,4 @@
+import { HttpCode, HttpStatus } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Response } from 'express';
 import { AddFood } from './dto/addFood.dto';
@@ -50,6 +51,7 @@ describe('FoodController', () => {
 
     try {
       await controller.addFood(
+        null,
         new AddFood('소유라멘', null, '일식', '라멘', '짠맛', null),
         responseMock,
       );
@@ -68,9 +70,12 @@ describe('FoodController', () => {
 
     expect(
       await controller.addFood(
+        null,
         new AddFood('소유라멘', null, '일식', '라멘', '짠맛', null),
         responseMock,
       ),
-    ).toBeInstanceOf(Food);
+    ).toBe(
+      responseMock.status(HttpStatus.CREATED).json({ message: 'Food added' }),
+    );
   });
 });
