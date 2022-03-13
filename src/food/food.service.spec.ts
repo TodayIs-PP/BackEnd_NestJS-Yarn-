@@ -88,7 +88,7 @@ describe('FoodsService: addFood', () => {
 
   it('Add food: return error', async () => {
     try {
-      await service.addFood(addFood);
+      await service.addFood(null, addFood);
     } catch (e) {
       expect(e).toBeInstanceOf(Error);
       expect(e.message).toBe('Fail to save foods');
@@ -100,6 +100,6 @@ describe('FoodsService: addFood', () => {
       .spyOn(repository, 'create')
       .mockImplementation(() => Promise.resolve(food));
 
-    expect(await service.addFood(addFood)).toBeInstanceOf(Food);
+    expect(await service.addFood(null, addFood)).toBeInstanceOf(Food);
   });
 });
