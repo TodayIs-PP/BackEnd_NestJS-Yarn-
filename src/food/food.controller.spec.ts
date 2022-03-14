@@ -1,7 +1,7 @@
 import { HttpStatus } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Response } from 'express';
-import { ResponseDTO } from 'src/global/response.dto';
+import { ResponseDTO } from '../global/response.dto';
 import { AddFood } from './dto/addFood.dto';
 import { Food } from './entity/food.entity';
 import { FoodController } from './food.controller';
@@ -54,16 +54,16 @@ describe('FoodController: addFood', () => {
       .spyOn(service, 'addFood')
       .mockRejectedValue(new Error('Fail to add food'));
 
-    try {
+    const responseDTO = new ResponseDTO();
+    responseDTO.message = 'Fail to add food';
+
+    expect(
       await controller.addFood(
         null,
         new AddFood('소유라멘', '일식', '라멘', '짠맛', null),
         responseMock,
-      );
-    } catch (e) {
-      expect(e).toBeInstanceOf(Error);
-      expect(e.message).toBe('Fail to add food');
-    }
+      ),
+    ).toBe(responseMock.status(HttpStatus.BAD_REQUEST).json(responseDTO));
   });
 
   it('addFood: Success', async () => {
@@ -95,12 +95,12 @@ describe('FoodController: getFoods', () => {
       .spyOn(service, 'getFoods')
       .mockRejectedValue(new Error('Fail to get foods'));
 
-    try {
-      await controller.getFoods(responseMock);
-    } catch (e) {
-      expect(e).toBeInstanceOf(Error);
-      expect(e.message).toBe('Fail to get Foods');
-    }
+    const responseDTO = new ResponseDTO();
+    responseDTO.message = 'Fail to get Foods';
+
+    expect(await controller.getFoods(responseMock)).toBe(
+      responseMock.status(HttpStatus.BAD_REQUEST).json(responseDTO),
+    );
   });
 
   it('getFoods: Success', async () => {
