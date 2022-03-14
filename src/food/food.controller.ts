@@ -33,7 +33,9 @@ export class FoodController {
       await this.foodService.addFood(image, addFood);
       return res.status(HttpStatus.CREATED).json({ message: 'Food added' });
     } catch (e) {
-      throw new Error(e.message);
+      return res
+        .status(HttpStatus.BAD_REQUEST)
+        .json(new ResponseDTO(e.message));
     }
   }
 
