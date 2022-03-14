@@ -31,7 +31,7 @@ export class Food {
   @Prop({ required: true })
   kind1: string;
 
-  @Prop({ required: true })
+  @Prop()
   kind2: string;
 
   @Prop({ required: true })

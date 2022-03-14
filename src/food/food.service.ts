@@ -18,6 +18,7 @@ export class FoodService {
   async addFood(image: Express.Multer.File, addFood: AddFood): Promise<Food> {
     const food = new Food(
       addFood.name,
+      image.filename,
       addFood.kind1,
       addFood.kind2,
       addFood.flavor1,
@@ -26,6 +27,7 @@ export class FoodService {
     try {
       return await this.foodRepository.create(food);
     } catch (e) {
+      console.log(e.message);
       throw Error('Fail to save foods');
     }
   }
