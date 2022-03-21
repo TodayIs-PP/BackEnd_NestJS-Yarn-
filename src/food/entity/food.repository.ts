@@ -36,6 +36,10 @@ export class FoodRepository {
   }
 
   async findByCategoryName(categoryName: string): Promise<Food[]> {
-    return await this.foodModel.find({ kind1: categoryName }).exec();
+    if (categoryName == '전체') {
+      return await this.foodModel.find().exec();
+    } else {
+      return await this.foodModel.find({ kind1: categoryName }).exec();
+    }
   }
 }
