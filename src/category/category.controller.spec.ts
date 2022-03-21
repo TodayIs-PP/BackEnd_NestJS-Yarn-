@@ -15,6 +15,18 @@ describe('CategoryController', () => {
         {
           provide: CategoryService,
           useValue: {
+            CATEGORIES: [
+              '전체',
+              '한식',
+              '중식',
+              '양식',
+              '일식',
+              '분식',
+              '디저트',
+              '치킨',
+              '피자',
+              '패스트푸드',
+            ],
             getCategory: jest.fn(),
           },
         },
@@ -62,5 +74,24 @@ describe('CategoryController', () => {
       .mockImplementation(() => Promise.resolve([food1, food2]));
 
     expect(await controller.getCategory('전체')).toEqual(response);
+  });
+
+  it('getCategories: Success', async () => {
+    const response = new ResponseDTO(null, [
+      '전체',
+      '한식',
+      '중식',
+      '양식',
+      '일식',
+      '분식',
+      '디저트',
+      '치킨',
+      '피자',
+      '패스트푸드',
+    ]);
+
+    console.log(await controller.getCategories());
+
+    expect(await controller.getCategories()).toStrictEqual(response);
   });
 });

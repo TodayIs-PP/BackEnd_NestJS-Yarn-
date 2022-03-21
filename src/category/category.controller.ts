@@ -7,6 +7,11 @@ import { CategoryService } from './category.service';
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
+  @Get('categories')
+  async getCategories(): Promise<ResponseDTO<string[]>> {
+    return new ResponseDTO(null, this.categoryService.CATEGORIES);
+  }
+
   @Get()
   async getCategory(
     @Query('name') categoryName: string,
