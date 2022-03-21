@@ -1,4 +1,5 @@
 import { Controller, Get, Query } from '@nestjs/common';
+import { Food } from '../food/entity/food.entity';
 import { ResponseDTO } from '../global/response.dto';
 import { CategoryService } from './category.service';
 
@@ -7,7 +8,12 @@ export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
   @Get()
-  getCategories(@Query('name') categoryName: string): ResponseDTO<string[]> {
-    return new ResponseDTO(null, this.categoryService.getCategories());
+  async getCategory(
+    @Query('name') categoryName: string,
+  ): Promise<ResponseDTO<Food[]>> {
+    return new ResponseDTO(
+      null,
+      await this.categoryService.getCategory(categoryName),
+    );
   }
 }

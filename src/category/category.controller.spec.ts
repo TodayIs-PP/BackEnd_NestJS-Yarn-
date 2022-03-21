@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ResponseDTO } from 'src/global/response.dto';
+import { ResponseDTO } from '../global/response.dto';
 import { Food } from '../food/entity/food.entity';
 import { CategoryController } from './category.controller';
 import { CategoryService } from './category.service';
