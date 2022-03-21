@@ -37,8 +37,8 @@ describe('CategoryController', () => {
       expect(e).toBeInstanceOf(Error);
     }
   });
-  
-  it('getCategory: Success', async () => {
+
+  it('getCategory: Success(특정 카테고리)', async () => {
     const food1 = new Food('소유라멘', null, '일식', '라멘', '짠맛', null);
     const food2 = new Food('소금라멘', null, '일식', '라멘', '단백한맛', null);
 
@@ -49,5 +49,18 @@ describe('CategoryController', () => {
       .mockImplementation(() => Promise.resolve([food1, food2]));
 
     expect(await controller.getCategory('일식')).toEqual(response);
-  }
+  });
+
+  it('getCategory: Success(전체)', async () => {
+    const food1 = new Food('소유라멘', null, '일식', '라멘', '짠맛', null);
+    const food2 = new Food('뿌링클', null, '치킨', null, '짠맛', '단맛');
+
+    const response = new ResponseDTO(null, [food1, food2]);
+
+    jest
+      .spyOn(service, 'getCategory')
+      .mockImplementation(() => Promise.resolve([food1, food2]));
+
+    expect(await controller.getCategory('전체')).toEqual(response);
+  });
 });
