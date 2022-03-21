@@ -1,5 +1,5 @@
 import { Controller, Get, Query } from '@nestjs/common';
-import { ResponseDTO } from 'src/global/response.dto';
+import { ResponseDTO } from '../global/response.dto';
 import { CategoryService } from './category.service';
 
 @Controller('category')

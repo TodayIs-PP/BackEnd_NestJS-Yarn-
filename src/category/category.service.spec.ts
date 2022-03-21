@@ -1,7 +1,7 @@
 import { getModelToken } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
-import { Food } from 'src/food/entity/food.entity';
-import { FoodRepository } from 'src/food/entity/food.repository';
+import { Food } from '../food/entity/food.entity';
+import { FoodRepository } from '../food/entity/food.repository';
 import { CategoryService } from './category.service';
 
 describe('CategoryService', () => {
@@ -28,25 +28,34 @@ describe('CategoryService', () => {
     expect(service).toBeDefined();
   });
 
-  it('getCategory: Fail', () => {
+  it('getCategory: Fail(Error)', async () => {
+    try {
+      await service.getCategory('일식');
+    } catch (e) {
+      console.log(e);
+      expect(e).toBeInstanceOf(Error);
+    }
+  });
+
+  it('getCategory: Fail', async () => {
     const food1 = new Food('뿌링클', null, '치킨', null, '짠맛', null);
     const food2 = new Food('황금올리브', null, '치킨', null, '단백한맛', null);
 
     jest
-    .spyOn('repository', 'findByCategoryName')
-    .mockImplementation(() => Promise.resolve([food1, food2]));
+      .spyOn(repository, 'findByCategoryName')
+      .mockImplementation(() => Promise.resolve([food1, food2]));
 
-    expect(service.getCategory('일식')).not.toBe([food1, food2]);
+    expect(await service.getCategory('일식')).not.toBe([food1, food2]);
   });
 
-  it('getCategory: Success', () => {
+  it('getCategory: Success', async () => {
     const food1 = new Food('소유라멘', null, '일식', '라멘', '짠맛', null);
     const food2 = new Food('소금라멘', null, '일식', '라멘', '단백한맛', null);
 
     jest
-    .spyOn('repository', 'findByCategoryName')
-    .mockImplementation(() => Promise.resolve([food1, food2]));
+      .spyOn(repository, 'findByCategoryName')
+      .mockImplementation(() => Promise.resolve([food1, food2]));
 
-    expect(service.getCategory('일식')).toEqual([food1, food2]);
+    expect(await service.getCategory('일식')).toEqual([food1, food2]);
   });
 });

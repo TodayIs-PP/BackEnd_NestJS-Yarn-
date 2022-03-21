@@ -18,7 +18,7 @@ export class FoodService {
   async addFood(image: Express.Multer.File, addFood: AddFood): Promise<Food> {
     const food = new Food(
       addFood.name,
-      image.filename,
+      image == undefined ? null : image.filename,
       addFood.kind1,
       addFood.kind2,
       addFood.flavor1,

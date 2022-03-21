@@ -34,4 +34,8 @@ export class FoodRepository {
       .find({ name: { $regex: '.*' + word + '.*' } })
       .exec();
   }
+
+  async findByCategoryName(categoryName: string): Promise<Food[]> {
+    return await this.foodModel.find({ kind1: categoryName }).exec();
+  }
 }

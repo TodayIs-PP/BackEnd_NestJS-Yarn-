@@ -1,7 +1,11 @@
 import { Injectable } from '@nestjs/common';
+import { Food } from '../food/entity/food.entity';
+import { FoodRepository } from '../food/entity/food.repository';
 
 @Injectable()
 export class CategoryService {
+  constructor(private readonly foodRepository: FoodRepository) {}
+
   getCategories(): Array<string> {
     return [
       '전체',
@@ -15,5 +19,9 @@ export class CategoryService {
       '피자',
       '패스트푸드',
     ];
+  }
+
+  async getCategory(categoryName: string): Promise<Food[]> {
+    return this.foodRepository.findByCategoryName(categoryName);
   }
 }
