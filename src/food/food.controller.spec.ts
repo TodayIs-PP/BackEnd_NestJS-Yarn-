@@ -31,6 +31,7 @@ async function injectDependency() {
         useValue: {
           getFoods: jest.fn(),
           addFood: jest.fn(),
+          search: jest.fn(),
         },
       },
     ],
@@ -114,6 +115,34 @@ describe('FoodController: getFoods', () => {
 
     expect(await controller.getFoods(responseMock)).toBe(
       responseMock.status(HttpStatus.CREATED).json(responseDTO),
+    );
+  });
+});
+
+describe('FoodController: searchFood', () => {
+  beforeEach(async () => {
+    await injectDependency();
+  });
+
+  it('searchFood: Fail', async () => {
+    const responseDTO = new ResponseDTO();
+    responseDTO.message = 'Fail to search Foods';
+
+    expect(await controller.search('치킨', responseMock)).toBe(
+      responseMock.status(HttpStatus.BAD_REQUEST).json(responseDTO),
+    );
+  });
+
+  it('searchFood: Success', async () => {
+    const food: Food = new Food('뿌링클', null, '치킨', null, '짠맛', '단맛');
+
+    jest.spyOn(service, 'search').mockResolvedValue([food]);
+
+    const responseDTO = new ResponseDTO();
+    responseDTO.data = [food];
+
+    expect(await controller.search('치킨', responseMock)).toBe(
+      responseMock.status(HttpStatus.BAD_REQUEST).json(responseDTO),
     );
   });
 });

@@ -102,4 +102,26 @@ describe('FoodsService: addFood', () => {
 
     expect(await service.addFood(null, addFood)).toBeInstanceOf(Food);
   });
+
+  it('SearchFood: Success', async () => {
+    try {
+      await service.search('링');
+    } catch (e) {
+      expect(e).toBeInstanceOf(Error);
+    }
+  });
+
+  it('SearchFood: Success', async () => {
+    jest.spyOn(repository, 'search').mockResolvedValue([]);
+
+    expect(await service.search('링')).toStrictEqual([]);
+  });
+
+  it('SearchFood: Success', async () => {
+    const food: Food = new Food('뿌링클', null, '치킨', null, '짠맛', '단맛');
+
+    jest.spyOn(repository, 'search').mockResolvedValue([food]);
+
+    expect(await service.search('링')).toStrictEqual([food]);
+  });
 });

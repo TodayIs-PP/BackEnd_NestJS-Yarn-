@@ -31,4 +31,13 @@ export class FoodService {
       throw Error('Fail to save foods');
     }
   }
+
+  async search(searchText: string): Promise<Food[]> {
+    try {
+      return await this.foodRepository.search(searchText);
+    } catch (e) {
+      console.log(e.message);
+      throw Error('Fail to search food');
+    }
+  }
 }

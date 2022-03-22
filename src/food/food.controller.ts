@@ -4,6 +4,7 @@ import {
   Get,
   HttpStatus,
   Post,
+  Query,
   Res,
   UploadedFile,
   UseInterceptors,
@@ -43,6 +44,24 @@ export class FoodController {
   async getFoods(@Res() res: Response): Promise<JsonResponse> {
     try {
       const foods = await this.foodService.getFoods();
+      return res
+        .status(HttpStatus.OK)
+        .json(new ResponseDTO<Food[]>(null, foods));
+    } catch (e) {
+      return res
+        .status(HttpStatus.BAD_REQUEST)
+        .json(new ResponseDTO(e.message));
+    }
+  }
+
+  @Get('/search')
+  async search(
+    @Query('searchFood') searchFood: string,
+    @Res() res: Response,
+  ): Promise<JsonResponse> {
+    const foods = await this.foodService.search(searchFood);
+
+    try {
       return res
         .status(HttpStatus.OK)
         .json(new ResponseDTO<Food[]>(null, foods));
