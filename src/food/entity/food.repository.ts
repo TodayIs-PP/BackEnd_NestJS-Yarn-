@@ -51,26 +51,20 @@ export class FoodRepository {
     flavor1?: string,
     flavor2?: string,
   ) {
-    const query = {};
-    if (detailKind1 && detailKind2) {
-      query['detailKind'] = { $nin: [detailKind1, detailKind2] };
-    } else if (detailKind1) {
-      query['detailKind'] = { $ne: detailKind1 };
-    } else if (detailKind2) {
-      query['detailKind'] = { $ne: detailKind2 };
-    }
-    if (kind1) {
-      query['kind1'] = kind1;
-    }
-    if (kind2) {
-      query['kind2'] = kind2;
-    }
-    if (flavor1) {
-      query['flavor1'] = flavor1;
-    }
-    if (flavor2) {
-      query['flavor2'] = flavor2;
-    }
-    return await this.foodModel.find(query).exec();
+    return await this.foodModel
+      .find({
+        detailKind: { $nin: [detailKind1, detailKind2] },
+        $or: [
+          { kind1: kind1 },
+          { kind1: kind2 },
+          { kind2: kind1 },
+          { kind2: kind2 },
+          { flavor1: flavor1 },
+          { flavor1: flavor2 },
+          { flavor2: flavor1 },
+          { flavor2: flavor2 },
+        ],
+      })
+      .exec();
   }
 }
