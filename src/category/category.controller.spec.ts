@@ -45,7 +45,6 @@ describe('CategoryController', () => {
     try {
       await controller.getCategory('일식');
     } catch (e) {
-      console.log(e);
       expect(e).toBeInstanceOf(Error);
     }
   });
@@ -89,9 +88,6 @@ describe('CategoryController', () => {
       '피자',
       '패스트푸드',
     ]);
-
-    console.log(await controller.getCategories());
-
     expect(await controller.getCategories()).toStrictEqual(response);
   });
 });

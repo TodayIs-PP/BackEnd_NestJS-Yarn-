@@ -10,6 +10,7 @@ export class Food {
     image?: string,
     kind1?: string,
     kind2?: string,
+    detailKind?: string,
     flavor1?: string,
     flavor2?: string,
   ) {
@@ -17,6 +18,7 @@ export class Food {
     this.image = image ?? null;
     this.kind1 = kind1;
     this.kind2 = kind2;
+    this.detailKind = detailKind;
     this.flavor1 = flavor1;
     this.flavor2 = flavor2 ?? null;
   }
@@ -33,6 +35,9 @@ export class Food {
 
   @Prop()
   kind2: string;
+
+  @Prop({ required: true })
+  detailKind: string;
 
   @Prop({ required: true })
   flavor1: string;

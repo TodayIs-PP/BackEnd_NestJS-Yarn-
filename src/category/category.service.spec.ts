@@ -32,7 +32,6 @@ describe('CategoryService', () => {
     try {
       await service.getCategory('일식');
     } catch (e) {
-      console.log(e);
       expect(e).toBeInstanceOf(Error);
     }
   });
