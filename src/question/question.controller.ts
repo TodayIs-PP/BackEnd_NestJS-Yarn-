@@ -10,7 +10,7 @@ type JsonResponse = Response<any, Record<string, any>>;
 export class QuestionController {
   constructor(private readonly questionService: QuestionService) {}
 
-  @Get('/questions')
+  @Get('/result')
   async getQuestionsResult(
     @Query('detailKind1') detailKind1: string,
     @Query('detailKind2') detailKind2: string,
@@ -41,5 +41,10 @@ export class QuestionController {
         .status(HttpStatus.BAD_REQUEST)
         .json(new ResponseDTO(e.message));
     }
+  }
+
+  @Get('/tastes')
+  getTastes() {
+    return this.questionService.TASTES;
   }
 }

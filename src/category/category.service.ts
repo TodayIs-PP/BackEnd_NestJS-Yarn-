@@ -16,6 +16,7 @@ export class CategoryService {
     '치킨',
     '피자',
     '패스트푸드',
+    '인스턴트',
   ];
 
   async getCategory(categoryName: string): Promise<Food[]> {

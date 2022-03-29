@@ -28,6 +28,14 @@ describe('QuestionController', () => {
         {
           provide: QuestionService,
           useValue: {
+            TASTES: [
+              '짭잘한거',
+              '매운거',
+              '단거',
+              '심심한거',
+              '단백한거',
+              '신거',
+            ],
             getQuestionsResult: jest.fn(),
           },
         },
@@ -76,5 +84,9 @@ describe('QuestionController', () => {
         responseMock,
       ),
     ).toBe(responseMock.status(HttpStatus.OK).json(responseDTO));
+  });
+
+  it('getTastes: Success', () => {
+    expect(controller.getTastes()).toBe(service.TASTES);
   });
 });

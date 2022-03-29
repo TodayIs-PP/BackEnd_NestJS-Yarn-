@@ -6,6 +6,15 @@ import { FoodRepository } from '../food/entity/food.repository';
 export class QuestionService {
   constructor(private readonly foodRepository: FoodRepository) {}
 
+  TASTES: string[] = [
+    '짭잘한거',
+    '매운거',
+    '단거',
+    '심심한거',
+    '단백한거',
+    '신거',
+  ];
+
   async getQuestionsResult(
     detailKind1?: string,
     detailKind2?: string,
