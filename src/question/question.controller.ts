@@ -44,7 +44,15 @@ export class QuestionController {
   }
 
   @Get('/tastes')
-  getTastes() {
-    return this.questionService.TASTES;
+  getTastes(@Res() res: Response) {
+    try {
+      return res
+        .status(HttpStatus.OK)
+        .json(new ResponseDTO(null, this.questionService.TASTES));
+    } catch (e) {
+      return res
+        .status(HttpStatus.BAD_REQUEST)
+        .json(new ResponseDTO(null, this.questionService.TASTES));
+    }
   }
 }

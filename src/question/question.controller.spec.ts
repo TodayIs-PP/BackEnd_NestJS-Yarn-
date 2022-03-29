@@ -87,6 +87,10 @@ describe('QuestionController', () => {
   });
 
   it('getTastes: Success', () => {
-    expect(controller.getTastes()).toBe(service.TASTES);
+    expect(controller.getTastes(responseMock)).toBe(
+      responseMock
+        .status(HttpStatus.OK)
+        .json(new ResponseDTO(null, service.TASTES)),
+    );
   });
 });
