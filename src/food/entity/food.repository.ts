@@ -54,15 +54,23 @@ export class FoodRepository {
     return await this.foodModel
       .find({
         detailKind: { $nin: [detailKind1, detailKind2] },
-        $or: [
-          { kind1: kind1 },
-          { kind1: kind2 },
-          { kind2: kind1 },
-          { kind2: kind2 },
-          { flavor1: flavor1 },
-          { flavor1: flavor2 },
-          { flavor2: flavor1 },
-          { flavor2: flavor2 },
+        $and: [
+          {
+            $or: [
+              { kind1: kind1 },
+              { kind1: kind2 },
+              { kind2: kind1 },
+              { kind2: kind2 },
+            ],
+          },
+          {
+            $or: [
+              { flavor1: flavor1 },
+              { flavor1: flavor2 },
+              { flavor2: flavor1 },
+              { flavor2: flavor2 },
+            ],
+          },
         ],
       })
       .exec();

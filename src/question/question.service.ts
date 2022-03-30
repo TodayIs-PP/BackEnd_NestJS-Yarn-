@@ -7,10 +7,11 @@ export class QuestionService {
   constructor(private readonly foodRepository: FoodRepository) {}
 
   TASTES: string[] = [
-    '짭잘한거',
+    '짠거',
     '매운거',
     '단거',
     '심심한거',
+    '고소한거',
     '단백한거',
     '신거',
   ];
