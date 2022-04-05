@@ -11,5 +11,10 @@ import { FoodService } from './food.service';
   ],
   controllers: [FoodController],
   providers: [FoodService, FoodRepository],
+  exports: [
+    MongooseModule.forFeature([{ name: Food.name, schema: FoodSchema }]),
+    FoodService,
+    FoodRepository,
+  ],
 })
 export class FoodModule {}

@@ -1,15 +1,11 @@
 import { Module } from '@nestjs/common';
 import { QuestionService } from './question.service';
 import { QuestionController } from './question.controller';
-import { FoodRepository } from '../food/entity/food.repository';
-import { MongooseModule } from '@nestjs/mongoose';
-import { Food, FoodSchema } from '../food/entity/food.entity';
+import { FoodModule } from 'src/food/food.module';
 
 @Module({
-  imports: [
-    MongooseModule.forFeature([{ name: Food.name, schema: FoodSchema }]),
-  ],
-  providers: [QuestionService, FoodRepository],
+  imports: [FoodModule],
+  providers: [QuestionService],
   controllers: [QuestionController],
 })
 export class QuestionModule {}
