@@ -2,22 +2,18 @@ import {
   Body,
   Controller,
   Get,
-  HttpStatus,
+  InternalServerErrorException,
   Post,
   Query,
-  Res,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { Response } from 'express';
 import { ResponseDTO } from '../global/response.dto';
 import { multerDiskOptions } from '../global/multer.options';
 import { AddFood } from './dto/addFood.dto';
 import { Food } from './entity/food.entity';
 import { FoodService } from './food.service';
-
-type JsonResponse = Response<any, Record<string, any>>;
 
 @Controller('food')
 export class FoodController {
@@ -28,47 +24,44 @@ export class FoodController {
   async addFood(
     @UploadedFile() image: Express.Multer.File,
     @Body() addFood: AddFood,
-    @Res() res: Response,
-  ): Promise<JsonResponse> {
+  ): Promise<ResponseDTO<any>> {
     try {
       await this.foodService.addFood(image, addFood);
-      return res.status(HttpStatus.CREATED).json({ message: 'Food added' });
+      return new ResponseDTO<Food[]>('Food added successfully');
     } catch (e) {
-      return res
-        .status(HttpStatus.BAD_REQUEST)
-        .json(new ResponseDTO(e.message));
+      throw new InternalServerErrorException({
+        message: e.message,
+        data: null,
+      });
     }
   }
 
   @Get('/foods')
-  async getFoods(@Res() res: Response): Promise<JsonResponse> {
+  async getFoods(): Promise<ResponseDTO<Food[]>> {
     try {
       const foods = await this.foodService.getFoods();
-      return res
-        .status(HttpStatus.OK)
-        .json(new ResponseDTO<Food[]>(null, foods));
+      return new ResponseDTO<Food[]>(null, foods);
     } catch (e) {
-      return res
-        .status(HttpStatus.BAD_REQUEST)
-        .json(new ResponseDTO(e.message));
+      throw new InternalServerErrorException({
+        message: e.message,
+        data: null,
+      });
     }
   }
 
   @Get('/search')
   async search(
     @Query('searchFood') searchFood: string,
-    @Res() res: Response,
-  ): Promise<JsonResponse> {
+  ): Promise<ResponseDTO<Food[]>> {
     const foods = await this.foodService.search(searchFood);
 
     try {
-      return res
-        .status(HttpStatus.OK)
-        .json(new ResponseDTO<Food[]>(null, foods));
+      return new ResponseDTO<Food[]>(null, foods);
     } catch (e) {
-      return res
-        .status(HttpStatus.BAD_REQUEST)
-        .json(new ResponseDTO(e.message));
+      throw new InternalServerErrorException({
+        message: e.message,
+        data: null,
+      });
     }
   }
 }

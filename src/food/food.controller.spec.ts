@@ -1,6 +1,5 @@
-import { HttpStatus } from '@nestjs/common';
+import { InternalServerErrorException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { Response } from 'express';
 import { ResponseDTO } from '../global/response.dto';
 import { AddFood } from './dto/addFood.dto';
 import { Food } from './entity/food.entity';
@@ -9,18 +8,6 @@ import { FoodService } from './food.service';
 
 let controller: FoodController;
 let service: FoodService;
-const responseMock = {
-  statusCode: Number,
-
-  status: jest.fn((httpStatusCode: number) => {
-    responseMock.statusCode = httpStatusCode;
-    return responseMock;
-  }),
-  json: jest.fn((body) => {
-    responseMock.send = body;
-    return responseMock;
-  }),
-} as unknown as Response;
 
 async function injectDependency() {
   const module: TestingModule = await Test.createTestingModule({
@@ -53,18 +40,20 @@ describe('FoodController: addFood', () => {
   it('addFood: Fail', async () => {
     jest
       .spyOn(service, 'addFood')
-      .mockRejectedValue(new Error('Fail to add food'));
+      .mockRejectedValue(new Error('Fail to save foods'));
 
-    const responseDTO = new ResponseDTO();
-    responseDTO.message = 'Fail to add food';
-
-    expect(
+    try {
       await controller.addFood(
         null,
         new AddFood('소유라멘', '일식', '라멘', '짠맛', null),
-        responseMock,
-      ),
-    ).toBe(responseMock.status(HttpStatus.BAD_REQUEST).json(responseDTO));
+      );
+    } catch (e) {
+      expect(e).toBeInstanceOf(InternalServerErrorException);
+      expect(e.response).toStrictEqual({
+        message: 'Fail to save foods',
+        data: null,
+      });
+    }
   });
 
   it('addFood: Success', async () => {
@@ -74,15 +63,15 @@ describe('FoodController: addFood', () => {
         new Food('소유라멘', null, '일식', '라멘', '짠맛', null),
       );
 
+    const responseDTO = new ResponseDTO();
+    responseDTO.message = 'Food added successfully';
+
     expect(
       await controller.addFood(
         null,
         new AddFood('소유라멘', '일식', '라멘', '짠맛', null),
-        responseMock,
       ),
-    ).toBe(
-      responseMock.status(HttpStatus.CREATED).json({ message: 'Food added' }),
-    );
+    ).toStrictEqual(responseDTO);
   });
 });
 
@@ -94,14 +83,17 @@ describe('FoodController: getFoods', () => {
   it('getFoods: Fail', async () => {
     jest
       .spyOn(service, 'getFoods')
-      .mockRejectedValue(new Error('Fail to get foods'));
+      .mockRejectedValue(new Error('Fail to load Foods'));
 
-    const responseDTO = new ResponseDTO();
-    responseDTO.message = 'Fail to get Foods';
-
-    expect(await controller.getFoods(responseMock)).toBe(
-      responseMock.status(HttpStatus.BAD_REQUEST).json(responseDTO),
-    );
+    try {
+      await controller.getFoods();
+    } catch (e) {
+      expect(e).toBeInstanceOf(InternalServerErrorException);
+      expect(e.response).toStrictEqual({
+        message: 'Fail to load Foods',
+        data: null,
+      });
+    }
   });
 
   it('getFoods: Success', async () => {
@@ -113,9 +105,7 @@ describe('FoodController: getFoods', () => {
     const responseDTO = new ResponseDTO();
     responseDTO.data = [food1, food2];
 
-    expect(await controller.getFoods(responseMock)).toBe(
-      responseMock.status(HttpStatus.CREATED).json(responseDTO),
-    );
+    expect(await controller.getFoods()).toStrictEqual(responseDTO);
   });
 });
 
@@ -125,12 +115,15 @@ describe('FoodController: searchFood', () => {
   });
 
   it('searchFood: Fail', async () => {
-    const responseDTO = new ResponseDTO();
-    responseDTO.message = 'Fail to search Foods';
-
-    expect(await controller.search('치킨', responseMock)).toBe(
-      responseMock.status(HttpStatus.BAD_REQUEST).json(responseDTO),
-    );
+    try {
+      await controller.search('치킨');
+    } catch (e) {
+      expect(e).toBeInstanceOf(InternalServerErrorException);
+      expect(e.response).toStrictEqual({
+        message: 'Fail to search Foods',
+        data: null,
+      });
+    }
   });
 
   it('searchFood: Success', async () => {
@@ -141,8 +134,6 @@ describe('FoodController: searchFood', () => {
     const responseDTO = new ResponseDTO();
     responseDTO.data = [food];
 
-    expect(await controller.search('치킨', responseMock)).toBe(
-      responseMock.status(HttpStatus.BAD_REQUEST).json(responseDTO),
-    );
+    expect(await controller.search('치킨')).toStrictEqual(responseDTO);
   });
 });
