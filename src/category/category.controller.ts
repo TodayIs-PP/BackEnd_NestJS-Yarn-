@@ -12,6 +12,11 @@ export class CategoryController {
     return new ResponseDTO(null, this.categoryService.CATEGORIES);
   }
 
+  @Get('addFoodCategories')
+  async getAddFoodCategories(): Promise<ResponseDTO<string[]>> {
+    return new ResponseDTO(null, this.categoryService.ADDFOODCATEGORIES);
+  }
+
   @Get()
   async getCategory(
     @Query('name') categoryName: string,

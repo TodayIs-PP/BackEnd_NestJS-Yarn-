@@ -16,6 +16,17 @@ export class QuestionService {
     '신거',
   ];
 
+  ADDFOODTASTES: string[] = [
+    '짠거',
+    '매운거',
+    '단거',
+    '심심한거',
+    '고소한거',
+    '단백한거',
+    '신거',
+    '선택안함',
+  ];
+
   async getQuestionsResult(
     detailKind1?: string,
     detailKind2?: string,

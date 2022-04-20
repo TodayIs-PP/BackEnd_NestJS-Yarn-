@@ -27,6 +27,18 @@ describe('CategoryController', () => {
               '피자',
               '패스트푸드',
             ],
+            ADDFOODCATEGORIES: [
+              '한식',
+              '중식',
+              '양식',
+              '일식',
+              '분식',
+              '디저트',
+              '치킨',
+              '피자',
+              '패스트푸드',
+              '선택안함',
+            ],
             getCategory: jest.fn(),
           },
         },
@@ -89,5 +101,21 @@ describe('CategoryController', () => {
       '패스트푸드',
     ]);
     expect(await controller.getCategories()).toStrictEqual(response);
+  });
+
+  it('getAddFoodCategories: Success', async () => {
+    const response = new ResponseDTO(null, [
+      '한식',
+      '중식',
+      '양식',
+      '일식',
+      '분식',
+      '디저트',
+      '치킨',
+      '피자',
+      '패스트푸드',
+      '선택안함',
+    ]);
+    expect(await controller.getAddFoodCategories()).toStrictEqual(response);
   });
 });

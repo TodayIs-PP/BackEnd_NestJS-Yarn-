@@ -29,12 +29,23 @@ describe('QuestionController', () => {
           provide: QuestionService,
           useValue: {
             TASTES: [
-              '짭잘한거',
+              '짠거',
               '매운거',
               '단거',
               '심심한거',
+              '고소한거',
               '단백한거',
               '신거',
+            ],
+            ADDFOODTASTES: [
+              '짠거',
+              '매운거',
+              '단거',
+              '심심한거',
+              '고소한거',
+              '단백한거',
+              '신거',
+              '선택안함',
             ],
             getQuestionsResult: jest.fn(),
           },
@@ -92,5 +103,19 @@ describe('QuestionController', () => {
         .status(HttpStatus.OK)
         .json(new ResponseDTO(null, service.TASTES)),
     );
+  });
+
+  it('getAddFoodCategories: Success', async () => {
+    const response = new ResponseDTO(null, [
+      '짠거',
+      '매운거',
+      '단거',
+      '심심한거',
+      '고소한거',
+      '단백한거',
+      '신거',
+      '선택안함',
+    ]);
+    expect(await controller.getAddFoodTastes()).toStrictEqual(response);
   });
 });

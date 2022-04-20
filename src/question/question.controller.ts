@@ -55,4 +55,9 @@ export class QuestionController {
         .json(new ResponseDTO(null, this.questionService.TASTES));
     }
   }
+
+  @Get('addFoodTastes')
+  async getAddFoodTastes(): Promise<ResponseDTO<string[]>> {
+    return new ResponseDTO(null, this.questionService.ADDFOODTASTES);
+  }
 }
